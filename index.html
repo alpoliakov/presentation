@@ -1,0 +1,342 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+		<meta name="description" content="Full-Bleed Layout Using CSS Grid">
+		<meta name="author" content="Oleksandr Poliakov">
+		
+		<title>CSS Grid</title>
+
+		<link rel="stylesheet" href="dist/reset.css">
+		<link rel="stylesheet" href="dist/reveal.css">
+		<link rel="stylesheet" href="dist/theme/black.css" id="theme">
+
+		<!-- Theme used for syntax highlighted code -->
+		<link rel="stylesheet" href="plugin/highlight/monokai.css" id="highlight-theme">
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+				<section>
+					<h2>CSS Grid</h2>
+					<h3>Full-Bleed Layout Using CSS Grid</h3>
+					<p>an elegant solution to a tricky modern layout</p>
+				</section>
+				<section data-transition="zoom">
+					<section>
+						<p>Back in the day, there was a gold-standard website layout that everyone strived to create,
+							but that was notoriously difficult to get right: the <a href="https://en.wikipedia.org/wiki/Holy_grail_(web_design)" target="_blank"> <strong>Holy Grail layout</strong></a>.
+						</p>
+					</section>
+					<section>
+						<img src="https://i.ibb.co/zSNtDDL/one.png" alt="one" border="0">
+					</section>
+					<section>
+						<p>It doesn't seem like it would be so tricky, right? But this was an era before flexbox existed;
+							our tools for the job were tables and floats, and neither were really up to this task. It was technically possible,
+							but some shenanigans were required.
+						</p>
+						<p>Once flexbox achieved mainstream browser support, this layout went from "holy grail" to "fountain drink";
+							it was everywhere, because it offered a great user experience, and was within reach for all developers.
+						</p>
+					</section>
+					<section>
+						<p>
+							As the web has evolved, I've discovered a new aspirational layout. It offers a fantastic user experience,
+							especially for long-form text content like news articles or documentation. But, like its predecessor,
+							it's been deceptively hard to achieve; most implementations require obscure hacks or counterintuitive tricks.
+						</p>
+						<p>
+							I recently discovered an elegant solution to this problem using CSS Grid. In this post, we'll learn how it works!
+						</p>
+					</section>
+				</section>
+				<section data-state="make-it-pop">
+					<section>
+						<h3>The problem</h3>
+					</section>
+					<section>
+						<p>Have you ever tried to read Wikipedia on a very large screen? It looks like this:</p>
+						<img src="https://i.ibb.co/vvfg6BX/two.png" alt="two" border="0">
+					</section>
+					<section>
+						<p>
+							Those paragraphs are so wide! Wikipedia doesn't constrain the container width at all. This leads to lines
+							that are hundreds of characters in length.
+						</p>
+						<p>
+							It's hard for our eyes to wrap around when we reach the and of a line. If you're like me, you wind up
+							using your mouse to assist:
+						</p>
+						<video data-autoplay src="./src/video/wikipedia-assist.mp4"></video>
+					</section>
+					<section>
+						<p>The standard solution to this problem is to create a single fixed-width column in the center of the page.
+							You've seen this layout everywhere: online magazines, documentation, news sites, and blogs. You're looking
+							at it right now, on this site!
+						</p>
+					</section>
+					<section>
+						<img src="https://i.ibb.co/2h469M9/three.png" alt="three" border="0">
+					</section>
+					<section>
+						<p>
+							There's a complicating factor, however—not all content should be constrained. We should allow images,
+							videos, and custom widgets to break free and fill the available width:
+						</p>
+					</section>
+					<section>
+						<div class="full__bleed">
+							<span class="post__image_wrapper">
+								<img src="https://i.ibb.co/pfk68jW/meerkat.jpg" class="post__image_img" alt="meerkat" border="0">
+							</span>
+						</div>
+					</section>
+					<section>
+						<p>
+							The common term for this kind of thing is “full-bleed”. It's a term borrowed from the publishing world;
+							when something is printed full-bleed, it extends to the very edge of the paper.
+						</p>
+						<p>
+							This new requirement makes the problem considerably more tricky. It's relatively easy to constrain all
+							children, but CSS doesn't really have a mechanism to selectively constrain some children.
+						</p>
+					</section>
+				</section>
+				<section data-transition="zoom">
+					<section>
+						<h3>The solution</h3>
+					</section>
+					<section data-auto-animate data-auto-animate-easing="cubic-bezier(0.770, 0.000, 0.175, 1.000)">
+						<p>
+							Let's start at the end, with our solution:
+						</p>
+						<p data-id="code-title">CSS</p>
+						<pre data-id="code-animation">
+							<code class="hljs" data-trim data-line-numbers>
+								.wrapper {
+								  display: grid;
+								  grid-template-columns:
+								    1fr
+								    min(65ch, 100%)
+								    1fr;
+								}
+								.wrapper > * {
+								  grid-column: 2;
+								}
+								.full-bleed {
+								  width: 100%;
+								  grid-column: 1 / 4;
+								}
+							</code>
+						</pre>
+					</section>
+					<section data-auto-animate data-auto-animate-easing="cubic-bezier(0.770, 0.000, 0.175, 1.000)">
+						<p>
+							These styles are assigned to markup in this shape:
+						</p>
+						<p data-id="code-title">HTML</p>
+						<pre data-id="code-animation">
+							<code class="hljs" data-trim data-line-numbers>
+								<script type="text/template">
+									<main class="wrapper">
+										<h1>Some Heading</h1>
+										<p>Some content and stuff</p>
+										<img class="full-bleed" alt="cute meerkat" src="/meerkat.jpg" />
+									</main>
+								</script>
+							</code>
+						</pre>
+					</section>
+					<section>
+						<p>There's a lot to unpack here, so let's go through it step by step.</p>
+					</section>
+					<section data-auto-animate data-auto-animate-easing="cubic-bezier(0.770, 0.000, 0.175, 1.000)">
+						<h6>The grid</h6>
+						<p data-id="code-title">CSS</p>
+						<pre data-id="code-animation">
+							<code class="hljs" data-trim data-line-numbers>
+								.wrapper {
+								  display: grid;
+								  grid-template-columns:
+								    1fr
+								    min(65ch, 100%)
+								    1fr;
+								}
+							</code>
+						</pre>
+					</section>
+					<section>
+						<p>
+							<strong class="text__color_tomato">grid-template-columns</strong>  is a property that lets us define the
+							shape of our grid. By providing 3 discrete values, we're indicating that we want 3 columns.
+						</p>
+						<p>
+							The values define the width of each column. The first column is 1fr, same as the last column. The fr unit
+							is a flexible unit that fills available space. It's similar in principle to flex-grow; it's a ratio of
+							how much of the free space the column should consume.
+						</p>
+					</section>
+					<section>
+						<p>
+							Our center column is a fixed width. We use the min helper to pick whichever value winds up being smaller.
+							On large screens, it will take up 65ch width. On smaller screens, where there isn't enough horizontal space
+							for 65 characters, it is clamped to 100% of the available container width.
+						</p>
+					</section>
+					<section>
+						<p>Here's what this looks like, in practice:</p>
+						<img src="https://i.ibb.co/nPxjrpf/four.png" alt="four" border="0">
+					</section>
+					<section>
+						<h6>Assigned children column</h6>
+						<p>We've defined a 3-column grid, and now it's time to assign children to it.</p>
+						<p data-id="code-title">CSS</p>
+						<pre data-id="code-animation">
+							<code class="hljs" data-trim data-line-numbers>
+								.wrapper > * {
+								  grid-column: 2;
+								}
+							</code>
+						</pre>
+					</section>
+					<section data-auto-animate data-auto-animate-easing="cubic-bezier(0.770, 0.000, 0.175, 1.000)">
+						<p>In CSS Grid, columns are 1-indexed, so 2 is a reference to the middle column.</p>
+						<p>We're saying that every child should be assigned to that second middle column. Each new child will
+							create a new row, like so:
+						</p>
+					</section>
+					<section data-auto-animate data-auto-animate-easing="cubic-bezier(0.770, 0.000, 0.175, 1.000)">
+						<img src="https://i.ibb.co/ZTnkCk0/five.png" alt="five" border="0">
+					</section>
+					<section>
+						<h6>Full bleed children</h6>
+						<p>We've seen how our grid can constrain elements of all types, but what about when we want a child to break
+							free and fill the available width?
+						</p>
+						<p>That's where this fella comes in:</p>
+						<p data-id="code-title">CSS</p>
+						<pre data-id="code-animation">
+							<code class="hljs" data-trim data-line-numbers>
+								.full-bleed {
+								  width: 100%;
+								  grid-column: 1 / 4;
+								}
+							</code>
+						</pre>
+					</section>
+					<section>
+						<p>
+							This special .full-bleed class allows a specific child to bust out of that column, and span all 3 columns.
+							1 / 4 is a start/end syntax; we're saying the element should start on Column 1 (inclusive) and span all
+							the way to Column 4 (exclusive).
+						</p>
+					</section>
+					<section>
+						<img class="big__img" src="https://i.ibb.co/B4zMbSZ/six.png" alt="six" border="0">
+						<p>
+							The trick is that each child becomes its own grid row, and each child can fill as much of that row as it
+							wants. Most elements will only ever occupy that center column, but some will instead span all 3.
+						</p>
+					</section>
+				</section>
+				<section data-transition="zoom">
+					<section>
+						<h3>Padding</h3>
+					</section>
+					<section>
+						<p>
+							On smaller screen-sizes, we want to add a bit of padding, so that our text isn't right at the edge of the
+							display.
+						</p>
+						<p>
+							We can accomplish this in a number of ways, including straight-up using padding! But since this is an
+							article about CSS Grid, let's check out the grid-based solution:
+						</p>
+						<p data-id="code-title">CSS</p>
+						<pre data-id="code-animation">
+							<code class="hljs" data-trim data-line-numbers>
+								.wrapper {
+								  display: grid;
+								  grid-template-columns: 1fr min(60ch, calc(100% - 64px)) 1fr;
+								  grid-column-gap: 32px;
+								}
+							</code>
+						</pre>
+					</section>
+					<section>
+						<p>
+							<strong class="text__color_tomato">grid-column-gap</strong> is a nifty property which lets us add gutters
+							between columns. In this case, I've hardcoded a value of 32px.
+						</p>
+						<p>
+							This introduces a problem, though; because of this extra space, we'll wind up with the dreaded horizontal
+							scrollbar on mobile 😡
+						</p>
+					</section>
+					<section>
+						<p>
+							The reason is that gaps are outside columns. We're telling our column to consume 100% of the available
+							width, and we're saying that the column should have 32px of space on each side of it. If our device has a
+							500px-wide screen, we'll wind up rendering 564px worth of stuff (500px column + 32px per side).
+						</p>
+					</section>
+					<section>
+						<p>
+							We can solve this problem with an absolutely magical CSS property, <strong class="text__color_tomato">calc</strong>.
+						</p>
+					</section>
+					<section>
+						<p>
+							<strong class="text__color_tomato">calc</strong> lets us mix units of different types. In this case, what
+							we want is to clamp our center column to be 64px shorter than the full width. We can derive this value
+							with <strong class="text__color_tomato">calc(100% - 64px)</strong>. This will become our new minimum width for mobile devices.
+						</p>
+					</section>
+				</section>
+				<section data-transition="zoom">
+					<section>
+						<h3>Conclusion</h3>
+					</section>
+					<section>
+						<p>
+							CSS Grid is super powerful, and now that it's achieved <a href="https://caniuse.com/css-grid" target="_blank">wide browser support</a>,
+							it can solve so many of our problems!
+						</p>
+						<p>Some readers have suggested that the same effect could be accomplished with flexbox, or without the use
+							of a wrapper at all. Unfortunately, there are some trade-offs that make those alternatives unworkable.
+						</p>
+					</section>
+					<section>
+						<p>
+							The historical solution to this problem uses negative margins. It works perfectly well, but it feels a
+							bit hacky to me. You can read more about that solution
+							on <a href="https://css-tricks.com/full-width-containers-limited-width-parents/" target="_blank">CSS Tricks</a>.
+						</p>
+					</section>
+				</section>
+			</div>
+		</div>
+
+		<script src="dist/reveal.js"></script>
+		<script src="plugin/notes/notes.js"></script>
+		<script src="plugin/markdown/markdown.js"></script>
+		<script src="plugin/highlight/highlight.js"></script>
+		<script>
+			// More info about initialization & config:
+			// - https://revealjs.com/initialization/
+			// - https://revealjs.com/config/
+			Reveal.initialize({
+				hash: true,
+        slideNumber: true,
+				transition: 'fade',
+				// Learn about plugins: https://revealjs.com/plugins/
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+			});
+      Reveal.on( 'make-it-pop', () => {
+        console.log('✨');
+      } );
+		</script>
+	</body>
+</html>
