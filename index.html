@@ -43,16 +43,16 @@
 					</section>
 					<section>
 						<p>
-							As the web has evolved, I've discovered a new aspirational layout. It offers a fantastic user experience,
+							As the web has evolved, an interesting new layout came up. It offers a fantastic user experience,
 							especially for long-form text content like news articles or documentation. But, like its predecessor,
 							it's been deceptively hard to achieve; most implementations require obscure hacks or counterintuitive tricks.
 						</p>
 						<p>
-							I recently discovered an elegant solution to this problem using CSS Grid. In this post, we'll learn how it works!
+							I recently discovered an elegant solution to this problem using CSS Grid. In this presentation, we'll learn how it works!
 						</p>
 					</section>
 				</section>
-				<section data-state="make-it-pop">
+				<section data-transition="zoom">
 					<section>
 						<h3>The problem</h3>
 					</section>
@@ -66,15 +66,28 @@
 							that are hundreds of characters in length.
 						</p>
 						<p>
-							It's hard for our eyes to wrap around when we reach the and of a line. If you're like me, you wind up
+							It's hard for our eyes to wrap around when we reach the end of a line. If you're like me, you wind up
 							using your mouse to assist:
 						</p>
 						<video data-autoplay src="./src/video/wikipedia-assist.mp4"></video>
 					</section>
 					<section>
+						<p>
+							In addition to the line-wrapping concern, it's just generally hard to read lines of text that are so wide;
+							it fatigues the eye.
+						</p>
+						<p>
+							<a href="https://readings.design/PDF/the_elements_of_typographic_style.pdf" target="_blank">Research has shown</a>
+							that the ideal line length is about 65 characters. Anywhere between 45 and 85 is generally seen as
+							acceptable, in the context of a roman alphabet. Reading is a
+							<a href="https://www.smashingmagazine.com/2014/09/balancing-line-length-font-size-responsive-web-design/" target="_blank">complex process</a>,
+							and we should strive to make it as easy as possible.
+						</p>
+					</section>
+					<section>
 						<p>The standard solution to this problem is to create a single fixed-width column in the center of the page.
 							You've seen this layout everywhere: online magazines, documentation, news sites, and blogs. You're looking
-							at it right now, on this site!
+							at it right now, on this presentation!
 						</p>
 					</section>
 					<section>
@@ -251,8 +264,8 @@
 							display.
 						</p>
 						<p>
-							We can accomplish this in a number of ways, including straight-up using padding! But since this is an
-							article about CSS Grid, let's check out the grid-based solution:
+							We can do this in many ways, including directly with indentation! But since we're talking about CSS Grid,
+							let's take a look at a grid-based solution:
 						</p>
 						<p data-id="code-title">CSS</p>
 						<pre data-id="code-animation">
@@ -304,8 +317,8 @@
 							CSS Grid is super powerful, and now that it's achieved <a href="https://caniuse.com/css-grid" target="_blank">wide browser support</a>,
 							it can solve so many of our problems!
 						</p>
-						<p>Some readers have suggested that the same effect could be accomplished with flexbox, or without the use
-							of a wrapper at all. Unfortunately, there are some trade-offs that make those alternatives unworkable.
+						<p>Some have suggested that the same effect could be accomplished with flexbox, or without the use of
+							a wrapper at all. Unfortunately, there are some trade-offs that make those alternatives unworkable.
 						</p>
 					</section>
 					<section>
